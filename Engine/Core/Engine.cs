@@ -1,4 +1,6 @@
-﻿namespace ClearSight.Core
+﻿using ClearSight.Core.Log;
+
+namespace ClearSight.Core
 {
     /// <summary>
     /// Static class for central init and deinit of the engine.
@@ -19,16 +21,21 @@
         {
             Assert.Always(CurrentApplication == null, "There is already an activate application.");
 
+            Logger.Global.Info("Creating application..");
             CurrentApplication = new T();
 
+            Logger.Global.Info("Initializing engine..");
             // Todo: Engine init.
 
             CurrentApplication.AfterEngineInit();
 
+            Logger.Global.Info("Starting application run..");
             CurrentApplication.Run();
+            Logger.Global.Info("Application finished..");
 
             CurrentApplication.BeforeEngineShutdown();
 
+            Logger.Global.Info("Shutting engine down..");
             // Todo: Engine shutdown.
 
             CurrentApplication.AfterEngineShutdown();

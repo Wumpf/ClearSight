@@ -16,6 +16,11 @@ namespace ClearSight.Core
         [Conditional("DEBUG")]
         static public void Debug(bool condition, string message)
         {
+            if (!condition)
+            {
+                Log.Logger.Global.Error(message);
+            }
+
             // Todo? Own assert implementation?
             System.Diagnostics.Debug.Assert(condition, message);
         }
@@ -27,6 +32,11 @@ namespace ClearSight.Core
         /// <param name="message">Message if it condition is false.</param>
         static public void Always(bool condition, string message)
         {
+            if (!condition)
+            {
+                Log.Logger.Global.Error(message);
+            }
+
             // Todo? Own assert implementation?
             System.Diagnostics.Trace.Assert(condition, message);
         }

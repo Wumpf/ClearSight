@@ -1,13 +1,18 @@
-﻿using System;
+﻿using ClearSight.Core.Window;
+using ClearSight.Core.Log;
+using System;
 
 namespace SimpleDesktop
 {
     class Application : System.Windows.Application, ClearSight.Core.IApplication
     {
-        ClearSight.Core.Window.WPFWindow window;
+        WPFWindow window;
 
         public Application()
         {
+            Logger.Global.RegisterLogWriter(new DebuggerLogWriter());
+            Logger.Global.RegisterLogWriter(new ConsoleLogWriter());
+
             window = new ClearSight.Core.Window.WPFWindow(1024, 786);
         }
 
@@ -21,6 +26,7 @@ namespace SimpleDesktop
 
         public void AfterEngineInit()
         {
+            Console.WriteLine("test");
         }
 
         public void AfterEngineShutdown()

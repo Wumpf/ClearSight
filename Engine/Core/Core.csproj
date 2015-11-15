@@ -48,9 +48,10 @@
     <Compile Include="Engine.cs" />
     <Compile Include="Log\ConsoleLogWriter.cs" />
     <Compile Include="Log\ILogWriter.cs" />
-    <Compile Include="Log\Logger.cs" />
+    <Compile Include="Log\Log.cs" />
     <Compile Include="Log\EventData.cs" />
     <Compile Include="Log\DebuggerLogWriter.cs" />
+    <Compile Include="Log\ScopedLogGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Window\WPFWindow.cs" />
     <Compile Include="Window\IWindow.cs" />

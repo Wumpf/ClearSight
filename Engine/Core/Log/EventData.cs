@@ -4,7 +4,7 @@
     /// Different log event types that a logwriter can receive.
     /// Number values and special entries are for easy log event determination.
     /// </summary>
-    /// <see cref="Logger.MessageFilter"/>
+    /// <see cref="Log.MessageFilter"/>
     /// <see cref="EventData.messageType"/>
     [System.Flags]
     public enum EventType
@@ -41,7 +41,7 @@
         /// <summary>
         /// All message types flag.
         /// </summary>
-        /// <see cref="Logger.MessageFilter"/>
+        /// <see cref="Log.MessageFilter"/>
         All = BeginGroup | EndGroup | ErrorMsg | WarningMsg | SuccessMsg | InfoMsg | DebugMsg,
     };
 

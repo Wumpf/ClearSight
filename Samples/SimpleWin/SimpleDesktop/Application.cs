@@ -10,8 +10,18 @@ namespace SimpleDesktop
 
         public Application()
         {
-            Logger.Global.RegisterLogWriter(new DebuggerLogWriter());
-            Logger.Global.RegisterLogWriter(new ConsoleLogWriter());
+            Log.RegisterLogWriter(new DebuggerLogWriter());
+            Log.RegisterLogWriter(new ConsoleLogWriter());
+
+            // Log test.
+            using(new ScopedLogGroup("TestGroup"))
+            {
+                Log.Error("testerror", 0);
+                using (new ScopedLogGroup("TestGroupNested"))
+                {
+                    Log.Debug("testdebug {0}", 0);
+                }
+            }
 
             window = new ClearSight.Core.Window.WPFWindow(1024, 786);
         }

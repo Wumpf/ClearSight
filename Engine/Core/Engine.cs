@@ -21,25 +21,30 @@ namespace ClearSight.Core
         {
             Assert.Always(CurrentApplication == null, "There is already an activate application.");
 
-            Logger.Global.Info("Creating application..");
-            CurrentApplication = new T();
+            using (new ScopedLogGroup("Application Creation"))
+            {
+                CurrentApplication = new T();
+            }
 
-            Logger.Global.Info("Initializing engine..");
-            // Todo: Engine init.
+            using (new ScopedLogGroup("Engine Init"))
+            {
+                // Todo: Engine init.
+            }
 
             CurrentApplication.AfterEngineInit();
 
-            Logger.Global.Info("Starting application run..");
+            Log.Log.Info("Starting application run.");
             CurrentApplication.Run();
-            Logger.Global.Info("Application finished..");
+            Log.Log.Info("Application run finished.");
 
             CurrentApplication.BeforeEngineShutdown();
 
-            Logger.Global.Info("Shutting engine down..");
-            // Todo: Engine shutdown.
+            using (new ScopedLogGroup("Engine Shutdown"))
+            {
+                // Todo: Engine shutdown.
+            }
 
             CurrentApplication.AfterEngineShutdown();
-
             CurrentApplication = null;
         }
     }

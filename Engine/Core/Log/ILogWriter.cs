@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClearSight.Core.Log
+﻿namespace ClearSight.Core.Log
 {
     /// <summary>
     /// Interface for all log writers.

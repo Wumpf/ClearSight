@@ -18,7 +18,7 @@ namespace ClearSight.Core
         {
             if (!condition)
             {
-                Log.Logger.Global.Error(message);
+                Log.Log.Error(message);
             }
 
             // Todo? Own assert implementation?
@@ -34,7 +34,7 @@ namespace ClearSight.Core
         {
             if (!condition)
             {
-                Log.Logger.Global.Error(message);
+                Log.Log.Error(message);
             }
 
             // Todo? Own assert implementation?

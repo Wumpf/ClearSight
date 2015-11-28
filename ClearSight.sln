@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Engine\Core\Core.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDesktop", "Samples\SimpleWin\SimpleDesktop\SimpleDesktop.csproj", "{D6BA9453-EA97-40A3-A2D2-2C1565EFBD10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RendererAbstract", "RendererAbstract\RendererAbstract.csproj", "{7D1DFFD2-AB23-45B8-B4F2-D1FD8F07B26C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D6BA9453-EA97-40A3-A2D2-2C1565EFBD10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6BA9453-EA97-40A3-A2D2-2C1565EFBD10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6BA9453-EA97-40A3-A2D2-2C1565EFBD10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D1DFFD2-AB23-45B8-B4F2-D1FD8F07B26C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D1DFFD2-AB23-45B8-B4F2-D1FD8F07B26C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D1DFFD2-AB23-45B8-B4F2-D1FD8F07B26C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D1DFFD2-AB23-45B8-B4F2-D1FD8F07B26C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,5 +40,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C6258FAC-B0C7-482F-80CE-8EA5ACD64A65} = {7E9C64BB-424C-4694-B0CE-E8FA67C0ABE2}
 		{D6BA9453-EA97-40A3-A2D2-2C1565EFBD10} = {5E1C05B3-59FC-484E-8536-8EDA58A598A7}
+		{7D1DFFD2-AB23-45B8-B4F2-D1FD8F07B26C} = {7E9C64BB-424C-4694-B0CE-E8FA67C0ABE2}
 	EndGlobalSection
 EndGlobal

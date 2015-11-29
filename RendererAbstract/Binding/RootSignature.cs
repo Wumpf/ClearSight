@@ -1,14 +1,14 @@
 ﻿namespace ClearSight.RendererAbstract.Binding
 {
-    public abstract class RootSignature : DeviceChild
+    public abstract class RootSignature : DeviceChild<RootSignature.Descriptor>
     {
-    }
+        public struct Descriptor
+        {
+            public enum Types
+            {
+            }
 
-    public abstract class GraphicsRootSignature : RootSignature
-    {
-    }
-
-    public abstract class ComputeRootSignature : RootSignature
-    {
+            public Types Type;
+        }
     }
 }

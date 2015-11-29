@@ -1,14 +1,17 @@
 ﻿namespace ClearSight.RendererAbstract.Resources
 {
-    public abstract class PipelineState : DeviceChild
+
+    public abstract class GraphicsPipelineState : DeviceChild<GraphicsPipelineState.Descriptor>
     {
+        public struct Descriptor
+        {
+        }
     }
 
-    public abstract class GraphicsPipelineState : PipelineState
+    public abstract class ComputePipelineState : DeviceChild<ComputePipelineState.Descriptor>
     {
-    }
-
-    public abstract class ComputePipelineState : PipelineState
-    {
+        public struct Descriptor
+        {
+        }
     }
 }

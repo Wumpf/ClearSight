@@ -1,20 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClearSight.RendererAbstract.Resources;
+﻿using ClearSight.RendererAbstract.Resources;
+using ClearSight.Core;
+
 
 namespace ClearSight.RendererAbstract.Memory
 {
-    class Resource : DeviceChild
+    abstract class Resource : DeviceChild<Heap.Descriptor>
     {
+        public struct Descriptor
+        {
+            public enum Types
+            {
+                Default,
+                Upload,
+                Readback,
+                //Custom // Not implemented for now.
+            }
+
+            public Types Type;
+        }
+
         /// <summary>
         /// Heap on which this resource was created.
-        /// If null the resource is either destroyed or was created using Device.CreateCommitedResource
+        /// If null the resource is either destroyed or is a commited resource.
         /// </summary>
         public Heap Heap { get; private set; } = null;
-
-
     }
 }

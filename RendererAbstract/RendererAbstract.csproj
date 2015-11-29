@@ -54,6 +54,12 @@
     <Compile Include="DeviceChild.cs" />
     <Compile Include="SwapChain.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Core\Core.csproj">
+      <Project>{c6258fac-b0c7-482f-80ce-8ea5acd64a65}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

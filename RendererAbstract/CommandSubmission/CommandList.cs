@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RendererAbstract
+﻿namespace ClearSight.RendererAbstract.CommandSubmission
 {
-    class CommandList
+    public abstract class CommandList : DeviceChild<CommandList.Descriptor>
     {
+        public struct Descriptor
+        {
+            public enum Types
+            {
+                Graphics,
+                Compute,
+                Copy,
+                //Bundle // Not implemented for now.
+            }
+
+            public Types Type;
+        }
     }
 }

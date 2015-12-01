@@ -1,6 +1,4 @@
 ﻿using ClearSight.RendererAbstract.Resources;
-using ClearSight.Core;
-
 
 namespace ClearSight.RendererAbstract.Memory
 {

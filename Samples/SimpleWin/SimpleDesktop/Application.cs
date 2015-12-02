@@ -1,12 +1,14 @@
 ﻿using ClearSight.Core.Window;
 using ClearSight.Core.Log;
+using ClearSight.RendererAbstract;
 using System;
 
 namespace SimpleDesktop
 {
     class Application : System.Windows.Application, ClearSight.Core.IApplication
     {
-        WPFWindow window;
+        private WPFWindow window;
+        private Device renderDevice;
 
         public Application()
         {
@@ -26,24 +28,20 @@ namespace SimpleDesktop
             window = new ClearSight.Core.Window.WPFWindow(1024, 786);
         }
 
-        public bool IsRunning
-        {
-            get
-            {
-                return !((ClearSight.Core.Window.IWindow)window).Closed;
-            }
-        }
+        public bool IsRunning => !((ClearSight.Core.Window.IWindow)window).Closed;
 
         public void AfterEngineInit()
         {
-            Console.WriteLine("test");
-        }
-
-        public void AfterEngineShutdown()
-        {
+            Device.Descriptor desc = new Device.Descriptor {DebugDevice = true};
+            renderDevice = new ClearSight.RendererDX12.Device(ref desc);
         }
 
         public void BeforeEngineShutdown()
+        {
+            renderDevice.Dispose();
+        }
+
+        public void AfterEngineShutdown()
         {
         }
 

@@ -1,28 +1,101 @@
 ﻿using System;
+using ClearSight.Core.Log;
 using ClearSight.RendererAbstract.Binding;
 using ClearSight.RendererAbstract.Resources;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace ClearSight.RendererDX12
 {
-    public abstract class Device : IDisposable
+    public class Device : RendererAbstract.Device
     {
-        protected void CopyDescriptorsImpl(DescriptorHeap source, DescriptorHeap destination, Tuple<uint>[] rangeStarts, uint numDescriptors)
+        /// <summary>
+        /// Wraps the SharpDX feature level, so that applications do not need to add SharpDX as a dependency.
+        /// </summary>
+        public enum FeatureLevel
+        {
+            Level_9_1 = SharpDX.Direct3D.FeatureLevel.Level_9_1,
+            Level_9_2 = SharpDX.Direct3D.FeatureLevel.Level_9_2,
+            Level_9_3 = SharpDX.Direct3D.FeatureLevel.Level_9_3,
+            Level_10_0 = SharpDX.Direct3D.FeatureLevel.Level_10_0,
+            Level_10_1 = SharpDX.Direct3D.FeatureLevel.Level_10_1,
+            Level_11_0 = SharpDX.Direct3D.FeatureLevel.Level_11_0,
+            Level_11_1 = SharpDX.Direct3D.FeatureLevel.Level_11_1,
+            Level_12_0 = SharpDX.Direct3D.FeatureLevel.Level_12_0,
+            Level_12_1 = SharpDX.Direct3D.FeatureLevel.Level_12_1,
+        }
+
+        public SharpDX.Direct3D12.Device DeviceD3D12 { get; private set; }
+        public SharpDX.DXGI.Adapter Adapter { get; private set; }
+
+        public Device(ref Descriptor desc, FeatureLevel featureLevel = FeatureLevel.Level_12_0) :
+            base(ref desc)
+        {
+            if (desc.DebugDevice)
+            {
+                var debugInterface = SharpDX.Direct3D12.DebugInterface.Get();
+                if (debugInterface != null)
+                {
+                    debugInterface.EnableDebugLayer();
+                }
+                else
+                {
+                    Log.Error("Failed to obtain DX12 debug layer.");
+                }
+            }
+
+            // Use first adapter that is supported.
+            using (SharpDX.DXGI.Factory dxgiFactory = new Factory1())
+            {
+                for (int adapterIndex = 0;; ++adapterIndex)
+                {
+                    var adapter = dxgiFactory.GetAdapter(adapterIndex);
+                    if (adapter == null)
+                    {
+                        // TODO: Throw exception
+                        return;
+                    }
+
+                    try
+                    {
+                        DeviceD3D12 = new SharpDX.Direct3D12.Device(adapter, (SharpDX.Direct3D.FeatureLevel) featureLevel);
+                        Adapter = adapter;
+                        break;
+                    }
+
+                    catch (Exception)
+                    {
+                        DeviceD3D12 = null;
+                        adapter.Dispose();
+                    }
+                }
+            }
+
+            // Todo: Gather different infos for user and internal use
+            // e.g. descriptor sizes, padding etc.
+
+
+            Log.Info("Successfully created a DX12 device with adapter \"{0}\"", Adapter.Description.Description);
+        }
+
+        protected override void CopyDescriptorsImpl(DescriptorHeap source, DescriptorHeap destination, Tuple<uint>[] rangeStarts, uint numDescriptors)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// This method ensures the GPU timestamp counter does not stop ticking during idle periods.
-        /// </summary>
-        public void SetStablePowerState(bool enable)
+        protected override void SetStablePowerStateImpl(bool enable)
         {
-            SetStablePowerStateImpl(enable);
+            DeviceD3D12.StablePowerState = enable;
+            Log.Info("Destroyed DX12 device!");
         }
-        protected abstract void SetStablePowerStateImpl(bool enable);
 
         /// <summary>
         /// Destroys the device.
         /// </summary>
-        public abstract void Dispose();
+        public override void Dispose()
+        {
+            DeviceD3D12.Dispose();
+            Adapter.Dispose();
+        }
     }
 }

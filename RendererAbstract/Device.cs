@@ -16,6 +16,18 @@ namespace ClearSight.RendererAbstract
     /// </remarks>
     public abstract class Device : IDisposable
     {
+        public struct Descriptor
+        {
+            public bool DebugDevice;
+        }
+
+        public Descriptor Desc { get; private set; }
+
+        protected Device(ref Descriptor desc)
+        {
+            Desc = desc;
+        }
+
         /// <summary>
         /// Copies descriptors from a source to a destination.
         /// </summary>

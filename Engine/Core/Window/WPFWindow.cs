@@ -24,7 +24,6 @@ namespace ClearSight.Core.Window
         {
             WindowStyle = WindowStyle.SingleBorderWindow;
             Background = Brushes.Black;
-            Topmost = true;
 
             Width = width;
             Height = height;

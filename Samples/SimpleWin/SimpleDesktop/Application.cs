@@ -33,7 +33,7 @@ namespace SimpleDesktop
         public void AfterEngineInit()
         {
             Device.Descriptor desc = new Device.Descriptor {DebugDevice = true};
-            renderDevice = new ClearSight.RendererDX12.Device(ref desc);
+            renderDevice = new ClearSight.RendererDX12.Device(ref desc, ClearSight.RendererDX12.Device.FeatureLevel.Level_11_0);
         }
 
         public void BeforeEngineShutdown()

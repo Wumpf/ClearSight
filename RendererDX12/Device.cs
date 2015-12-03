@@ -45,7 +45,7 @@ namespace ClearSight.RendererDX12
             }
 
             // Use first adapter that is supported.
-            using (SharpDX.DXGI.Factory dxgiFactory = new Factory1())
+            using (SharpDX.DXGI.Factory dxgiFactory = new Factory4())
             {
                 for (int adapterIndex = 0;; ++adapterIndex)
                 {

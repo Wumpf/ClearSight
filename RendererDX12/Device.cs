@@ -1,8 +1,7 @@
 ﻿using System;
 using ClearSight.Core.Log;
 using ClearSight.RendererAbstract.Binding;
-using ClearSight.RendererAbstract.Resources;
-using SharpDX.Direct3D;
+using ClearSight.RendererAbstract.CommandSubmission;
 using SharpDX.DXGI;
 
 namespace ClearSight.RendererDX12
@@ -28,8 +27,7 @@ namespace ClearSight.RendererDX12
         public SharpDX.Direct3D12.Device DeviceD3D12 { get; private set; }
         public SharpDX.DXGI.Adapter Adapter { get; private set; }
 
-        public Device(ref Descriptor desc, FeatureLevel featureLevel = FeatureLevel.Level_12_0) :
-            base(ref desc)
+        public Device(ref Descriptor desc, FeatureLevel featureLevel = FeatureLevel.Level_12_0) : base(ref desc)
         {
             if (desc.DebugDevice)
             {
@@ -82,6 +80,16 @@ namespace ClearSight.RendererDX12
         {
             throw new NotImplementedException();
         }
+
+        #region Create
+
+        public override CommandQueue Create(ref CommandQueue.Descriptor desc, string label = "<unnamed>")
+        {
+            CommandQueue cq = new ClearSight.RendererDX12.CommandSubmission.CommandQueue(ref desc, this, label);
+            return cq;
+        }
+
+        #endregion
 
         protected override void SetStablePowerStateImpl(bool enable)
         {

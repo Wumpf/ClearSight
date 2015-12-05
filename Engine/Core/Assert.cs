@@ -14,6 +14,7 @@ namespace ClearSight.Core
         /// <param name="condition">Condition that should be met.</param>
         /// <param name="message">Message if it condition is false.</param>
         [Conditional("DEBUG")]
+        [DebuggerHidden]
         static public void Debug(bool condition, string message)
         {
             if (!condition)
@@ -30,6 +31,7 @@ namespace ClearSight.Core
         /// </summary>
         /// <param name="condition">Condition that should be met.</param>
         /// <param name="message">Message if it condition is false.</param>
+        [DebuggerHidden]
         static public void Always(bool condition, string message)
         {
             if (!condition)

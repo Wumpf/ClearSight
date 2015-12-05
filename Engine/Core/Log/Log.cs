@@ -140,37 +140,45 @@ namespace ClearSight.Core.Log
             }
         }
 
+        [DebuggerHidden]
         static public void Error(string message, params object[] args)
         {
             defaultLog.HandleLogMessage(string.Format(message, args), EventType.ErrorMsg);
         }
+        [DebuggerHidden]
         static public void Error(Log targetedLog, string message, params object[] args)
         {
             targetedLog.HandleLogMessage(string.Format(message, args), EventType.ErrorMsg);
         }
 
+        [DebuggerHidden]
         static public void Warning(string message, params object[] args)
         {
             defaultLog.HandleLogMessage(string.Format(message, args), EventType.WarningMsg);
         }
+        [DebuggerHidden]
         static public void Warning(Log targetedLog, string message, params object[] args)
         {
             targetedLog.HandleLogMessage(string.Format(message, args), EventType.WarningMsg);
         }
 
+        [DebuggerHidden]
         static public void Success(string message, params object[] args)
         {
             defaultLog.HandleLogMessage(string.Format(message, args), EventType.SuccessMsg);
         }
+        [DebuggerHidden]
         static public void Success(Log targetedLog, string message, params object[] args)
         {
             targetedLog.HandleLogMessage(string.Format(message, args), EventType.SuccessMsg);
         }
 
+        [DebuggerHidden]
         static public void Info(string message, params object[] args)
         {
             defaultLog.HandleLogMessage(string.Format(message, args), EventType.InfoMsg);
         }
+        [DebuggerHidden]
         static public void Info(Log targetedLog, string message, params object[] args)
         {
             targetedLog.HandleLogMessage(string.Format(message, args), EventType.InfoMsg);
@@ -178,6 +186,7 @@ namespace ClearSight.Core.Log
 
         /// <see cref="Debug(Log, string, object[])"/>
         [Conditional("DEBUG")]
+        [DebuggerHidden]
         static public void Debug(string message, params object[] args)
         {
             defaultLog.HandleLogMessage(string.Format(message, args), EventType.DebugMsg);
@@ -187,6 +196,7 @@ namespace ClearSight.Core.Log
         /// </summary>
         /// <param name="message">Content of the message to be logged.</param>
         [Conditional("DEBUG")]
+        [DebuggerHidden]
         public void Debug(Log targetedLog, string message, params object[] args)
         {
             targetedLog.HandleLogMessage(string.Format(message, args), EventType.DebugMsg);

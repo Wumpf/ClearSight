@@ -2,7 +2,7 @@
 
 namespace ClearSight.RendererAbstract.Memory
 {
-    abstract class Resource : DeviceChild<Heap.Descriptor>
+    abstract class Resource : DeviceChild<Resource.Descriptor>
     {
         public struct Descriptor
         {
@@ -22,5 +22,10 @@ namespace ClearSight.RendererAbstract.Memory
         /// If null the resource is either destroyed or is a commited resource.
         /// </summary>
         public Heap Heap { get; private set; } = null;
+
+        protected Resource(ref Descriptor desc, Device device, string label) : base(ref desc, device, label)
+        {
+            Create();
+        }
     }
 }

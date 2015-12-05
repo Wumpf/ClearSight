@@ -1,4 +1,5 @@
-﻿using ClearSight.RendererAbstract;
+﻿using System;
+using ClearSight.RendererAbstract;
 
 namespace ClearSight.RendererAbstract.CommandSubmission
 {
@@ -14,6 +15,11 @@ namespace ClearSight.RendererAbstract.CommandSubmission
             }
 
             public Types Type;
+        }
+
+        protected CommandQueue(ref Descriptor desc, Device device, string label) : base(ref desc, device, label)
+        {
+            Create();
         }
     }
 }

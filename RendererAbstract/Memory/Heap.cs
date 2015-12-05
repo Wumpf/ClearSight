@@ -14,5 +14,10 @@
 
             public Types Type;
         }
+
+        protected Heap(ref Descriptor desc, Device device, string label) : base(ref desc, device, label)
+        {
+            Create();
+        }
     }
 }

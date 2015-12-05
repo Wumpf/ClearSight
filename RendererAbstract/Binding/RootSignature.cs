@@ -10,5 +10,10 @@
 
             public Types Type;
         }
+
+        protected RootSignature(ref Descriptor desc, Device device, string label) : base(ref desc, device, label)
+        {
+
+        }
     }
 }

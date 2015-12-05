@@ -12,5 +12,10 @@ namespace ClearSight.RendererAbstract.Binding
 
             public Types Type;
         }
+
+        protected DescriptorHeap(ref Descriptor desc, Device device, string label) : base(ref desc, device, label)
+        {
+            Create();
+        }
     }
 }

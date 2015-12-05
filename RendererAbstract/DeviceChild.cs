@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Dynamic;
+using System.Reflection.Emit;
 using System.Security.Authentication.ExtendedProtection.Configuration;
 using System.Threading;
 
@@ -14,12 +15,24 @@ namespace ClearSight.RendererAbstract
         /// <summary>
         /// The descriptor, set by Device.Create
         /// </summary>
-        public TDescriptor Desc { get; internal set; }
+        public TDescriptor Desc { get; private set; }
 
         /// <summary>
         /// Device from which this DeviceChild was created. Set by Device.Create
         /// </summary>
-        public Device Device { get; set; }
+        public Device Device { get; private set; }
+
+        /// <summary>
+        /// Device child label, useful for debugging.
+        /// </summary>
+        public string Label { get; private set; }
+
+        protected DeviceChild(ref TDescriptor desc, Device device, string label)
+        {
+            Desc = desc;
+            Device = device;
+            Label = label;
+        }
 
         #region State
 
@@ -54,7 +67,10 @@ namespace ClearSight.RendererAbstract
         /// </summary>
         internal void Create()
         {
+            ClearSight.Core.Assert.Debug(CurrentState == State.Invalid, "It is only possible to create device children if their are uninitialized.");
+            ClearSight.Core.Assert.Debug(!InUse, "It is not possible to create device children that are in use.");
             CreateImpl();
+            CurrentState = State.Normal;
         }
 
         protected abstract void CreateImpl();
@@ -64,7 +80,10 @@ namespace ClearSight.RendererAbstract
         /// </summary>
         internal void Destroy()
         {
+            ClearSight.Core.Assert.Debug(CurrentState == State.Normal, "It is only possible to destroy intact device children.");
+            ClearSight.Core.Assert.Debug(!InUse, "It is not possible to destroy device children that are in use.");
             DestroyImpl();
+            CurrentState = State.Invalid;
         }
 
         protected abstract void DestroyImpl();
@@ -91,8 +110,7 @@ namespace ClearSight.RendererAbstract
         {
             lock (this)
             {
-                ClearSight.Core.Assert.Always(CurrentState == State.Normal,
-                    "It is only possible to lock intact device childs.");
+                ClearSight.Core.Assert.Always(CurrentState == State.Normal, "It is only possible to lock intact device children.");
                 ClearSight.Core.Assert.Debug(usageCount < 0, "Invalid lock count!");
 
                 ++usageCount;
@@ -110,7 +128,7 @@ namespace ClearSight.RendererAbstract
             lock (this)
             {
                 ClearSight.Core.Assert.Always(CurrentState == State.Normal,
-                    "It is only possible to unlock intact device childs.");
+                    "It is only possible to unlock intact device children.");
                 ClearSight.Core.Assert.Debug(usageCount <= 0, "Invalid lock count!");
 
                 --usageCount;
@@ -128,8 +146,10 @@ namespace ClearSight.RendererAbstract
         /// Destroys the resource. If the resource is locked, it will be destroyed when all locks are lifted.
         /// Calls unload.
         /// </summary>
-        void IDisposable.Dispose()
+       public void Dispose()
         {
+            ClearSight.Core.Assert.Debug(CurrentState == State.Normal, "It is only possible to destroy intact device children.");
+
             lock (this)
             {
                 if (InUse)
@@ -139,7 +159,6 @@ namespace ClearSight.RendererAbstract
                 else
                 {
                     Destroy();
-                    CurrentState = State.Invalid;
                     GC.SuppressFinalize(this);
                 }
             }

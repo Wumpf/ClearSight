@@ -1,5 +1,6 @@
 ﻿using System;
 using ClearSight.RendererAbstract.Binding;
+using ClearSight.RendererAbstract.CommandSubmission;
 using ClearSight.RendererAbstract.Resources;
 
 namespace ClearSight.RendererAbstract
@@ -38,17 +39,11 @@ namespace ClearSight.RendererAbstract
         }
         protected abstract void CopyDescriptorsImpl(DescriptorHeap source, DescriptorHeap destination, Tuple<uint>[] rangeStarts, uint numDescriptors);
 
-        /// <summary>
-        /// Creates a device child with the given type.
-        /// </summary>
-        public TChild Create<TChild, TDescriptor>(ref TDescriptor desc)
-            where TDescriptor : struct
-            where TChild : DeviceChild<TDescriptor>, new()
-        {
-            var newDeviceChild = new TChild {Desc = desc, Device = this};
-            newDeviceChild.Create();
-            return newDeviceChild;
-        }
+        #region Create
+
+        public abstract CommandQueue Create(ref CommandQueue.Descriptor desc, string label = "<unnamed>");
+
+        #endregion
 
         /// <summary>
         /// This method ensures the GPU timestamp counter does not stop ticking during idle periods.

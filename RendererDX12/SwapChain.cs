@@ -10,19 +10,19 @@ namespace ClearSight.RendererDX12
     {
         public SwapChain3 SwapChainDXGI { get; private set; }
 
-        /// <summary>
-        /// Creates a new DXGI swap chain.
-        /// </summary>
-        /// <exception cref="SharpDX.SharpDXException"></exception>
-        public SwapChain(ref Descriptor desc) : base(ref desc)
+        internal SwapChain(ref Descriptor desc, RendererAbstract.Device device, string label) : base(ref desc, device, label)
+        {
+        }
+
+        protected override void CreateImpl()
         {
             var swapChainDesc = new SwapChainDescription()
             {
                 BufferCount = (int)Desc.BufferCount,
-                ModeDescription = new ModeDescription((int) desc.Width, (int) desc.Height, new Rational(0,0), Format.R8G8B8A8_UNorm),
+                ModeDescription = new ModeDescription((int) Desc.Width, (int)Desc.Height, new Rational(0,0), Format.R8G8B8A8_UNorm),
                 Usage = Usage.RenderTargetOutput,
                 SwapEffect = SwapEffect.FlipDiscard,
-                OutputHandle = desc.WindowHandle,
+                OutputHandle = Desc.WindowHandle,
                 SampleDescription = new SampleDescription
                 {
                     Count = (int) Desc.SampleCount,
@@ -32,23 +32,30 @@ namespace ClearSight.RendererDX12
             };
             using (var factory = new Factory4())
             {
-                var tempSwapChain = new SharpDX.DXGI.SwapChain(factory, ((CommandQueue)desc.AssociatedGraphicsQueue).CommandQueueD3D12, swapChainDesc);
+                var tempSwapChain = new SharpDX.DXGI.SwapChain(factory, ((CommandQueue)Desc.AssociatedGraphicsQueue).CommandQueueD3D12, swapChainDesc);
                 SwapChainDXGI = tempSwapChain.QueryInterface<SwapChain3>();
                 tempSwapChain.Dispose();
                 CurrentBackBufferIndex = (uint)SwapChainDXGI.CurrentBackBufferIndex;
             }
 
+            SwapChainDXGI.DebugName = Label;
+
             Log.Info("Created SwapChain");
         }
 
-        public override void Present(uint syncInterval)
+        protected override void DestroyImpl()
+        {
+            base.DestroyImpl();
+            SwapChainDXGI.Dispose();
+        }
+
+        protected override void Present(uint syncInterval = 1)
         {
             SwapChainDXGI.Present((int)syncInterval, PresentFlags.None);
         }
 
-        public override void Dispose()
-        {
-            SwapChainDXGI.Dispose();
-        }
+        public override uint ActiveSwapChainBufferIndex => (uint)SwapChainDXGI.CurrentBackBufferIndex;
+
+        
     }
 }

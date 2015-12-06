@@ -41,7 +41,11 @@ namespace ClearSight.RendererAbstract
 
         #region Create
 
-        public abstract CommandQueue Create(ref CommandQueue.Descriptor desc, string label = "<unnamed>");
+        public abstract SwapChain Create(ref SwapChain.Descriptor desc, string label = "<unnamed swapChain>");
+
+        public abstract CommandQueue Create(ref CommandQueue.Descriptor desc, string label = "<unnamed commandQueue>");
+        public abstract CommandList Create(ref CommandList.Descriptor desc, string label = "<unnamed commandList>");
+        public abstract Fence Create(ref Fence.Descriptor desc, string label = "<unnamed fence>");
 
         #endregion
 

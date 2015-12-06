@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandSubmission\Fence.cs" />
+    <Compile Include="CommandSubmission\CommandList.cs" />
     <Compile Include="CommandSubmission\CommandQueue.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

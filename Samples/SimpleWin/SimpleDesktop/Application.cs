@@ -3,6 +3,7 @@ using ClearSight.Core.Log;
 using ClearSight.RendererAbstract;
 using System;
 using System.Windows.Interop;
+using System.Windows.Threading;
 using ClearSight.RendererAbstract.CommandSubmission;
 
 namespace SimpleDesktop
@@ -40,14 +41,17 @@ namespace SimpleDesktop
             Device.Descriptor desc = new Device.Descriptor {DebugDevice = true};
             renderDevice = new ClearSight.RendererDX12.Device(ref desc, ClearSight.RendererDX12.Device.FeatureLevel.Level_11_0);
 
-            CommandQueue.Descriptor descCQ = new CommandQueue.Descriptor() { Type = CommandQueue.Descriptor.Types.Graphics };
+            CommandQueue.Descriptor descCQ = new CommandQueue.Descriptor() { Type = CommandListType.Graphics };
             commandQueue = renderDevice.Create(ref descCQ);
 
             var wih = new WindowInteropHelper(window);
             var swapChainDesc = new SwapChain.Descriptor()
             {
                 AssociatedGraphicsQueue = commandQueue,
+
+                MaxFramesInFlight = 3,
                 BufferCount = 3,
+
                 Width = (uint)window.Width,
                 Height = (uint)window.Height,
 
@@ -57,7 +61,7 @@ namespace SimpleDesktop
                 WindowHandle = wih.Handle,
                 Fullscreen = false
             };
-            swapChain = new ClearSight.RendererDX12.SwapChain(ref swapChainDesc);
+            swapChain = renderDevice.Create(ref swapChainDesc);
         }
 
 
@@ -74,7 +78,14 @@ namespace SimpleDesktop
 
         new public void Run()
         {
+            ComponentDispatcher.ThreadIdle += new EventHandler(Update);
             Run(window);
+        }
+
+        private void Update(object sender, EventArgs e)
+        {
+            swapChain.BeginFrame();
+            swapChain.EndFrame();
         }
 
         [STAThread]

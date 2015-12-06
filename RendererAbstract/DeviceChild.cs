@@ -111,7 +111,7 @@ namespace ClearSight.RendererAbstract
             lock (this)
             {
                 ClearSight.Core.Assert.Always(CurrentState == State.Normal, "It is only possible to lock intact device children.");
-                ClearSight.Core.Assert.Debug(usageCount < 0, "Invalid lock count!");
+                ClearSight.Core.Assert.Debug(usageCount >= 0, "Invalid lock count!");
 
                 ++usageCount;
             }
@@ -127,9 +127,8 @@ namespace ClearSight.RendererAbstract
         {
             lock (this)
             {
-                ClearSight.Core.Assert.Always(CurrentState == State.Normal,
-                    "It is only possible to unlock intact device children.");
-                ClearSight.Core.Assert.Debug(usageCount <= 0, "Invalid lock count!");
+                ClearSight.Core.Assert.Always(CurrentState == State.Normal, "It is only possible to unlock intact device children.");
+                ClearSight.Core.Assert.Debug(usageCount > 0, "Invalid lock count!");
 
                 --usageCount;
 

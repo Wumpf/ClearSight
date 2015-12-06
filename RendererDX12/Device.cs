@@ -82,11 +82,24 @@ namespace ClearSight.RendererDX12
         }
 
         #region Create
-
-        public override CommandQueue Create(ref CommandQueue.Descriptor desc, string label = "<unnamed>")
+        public override ClearSight.RendererAbstract.SwapChain Create(ref SwapChain.Descriptor desc, string label = "<unnamed swapChain>")
         {
-            CommandQueue cq = new ClearSight.RendererDX12.CommandSubmission.CommandQueue(ref desc, this, label);
-            return cq;
+            return new SwapChain(ref desc, this, label);
+        }
+
+        public override CommandQueue Create(ref CommandQueue.Descriptor desc, string label = "<unnamed commandQueue>")
+        {
+            return new CommandSubmission.CommandQueue(ref desc, this, label);
+        }
+
+        public override CommandList Create(ref CommandList.Descriptor desc, string label = "<unnamed commandList>")
+        {
+            return new CommandSubmission.CommandList(ref desc, this, label);
+        }
+
+        public override Fence Create(ref Fence.Descriptor desc, string label = "<unnamed fence>")
+        {
+            return new CommandSubmission.Fence(ref desc, this, label);
         }
 
         #endregion
@@ -105,5 +118,11 @@ namespace ClearSight.RendererDX12
             DeviceD3D12.Dispose();
             Adapter.Dispose();
         }
+
+        #region Command Allocator
+
+        //SharpDX.Direct3D12.CommandAllocator
+
+        #endregion
     }
 }

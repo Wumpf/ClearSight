@@ -7,14 +7,7 @@ namespace ClearSight.RendererAbstract.CommandSubmission
     {
         public struct Descriptor
         {
-            public enum Types
-            {
-                Graphics,
-                Compute,
-                Copy
-            }
-
-            public Types Type;
+            public CommandListType Type;
         }
 
         protected CommandQueue(ref Descriptor desc, Device device, string label) : base(ref desc, device, label)

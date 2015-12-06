@@ -24,18 +24,10 @@ namespace ClearSight.RendererDX12.CommandSubmission
             }
         }
 
-        public SharpDX.Direct3D12.CommandList CommandListD3D12 { get; private set; }
+        public SharpDX.Direct3D12.GraphicsCommandList CommandListD3D12 { get; private set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Fence CompletionFence { get; private set; }
-
-        /// <summary>
-        /// List of command allocators.
-        /// </summary>
-        public List<SharpDX.Direct3D12.CommandAllocator> CommandAllocators { get; private set; }
-
+        // In DX12 command list and allocator start ready to record.
+        private bool commandListOpen = true;
 
         internal CommandList(ref Descriptor desc, RendererAbstract.Device device, string label) : base(ref desc, device, label)
         {
@@ -43,22 +35,34 @@ namespace ClearSight.RendererDX12.CommandSubmission
 
         protected override void CreateImpl()
         {
-            
+            CommandListD3D12 = ((Device)Device).DeviceD3D12.CreateCommandList(GetDXCommandListType(Desc.Type), ((CommandAllocator)ActiveAllocator).AllocatorD3D12, null);
+            CommandListD3D12.Name = Label;
         }
 
         protected override void DestroyImpl()
         {
-            
+            CommandListD3D12.Dispose();
         }
 
         public override void StartRecordingImpl()
+        {   
+            if (!commandListOpen)
+            {
+                ((CommandAllocator) ActiveAllocator).AllocatorD3D12.Reset();
+                CommandListD3D12.Reset(((CommandAllocator) ActiveAllocator).AllocatorD3D12, null);
+                commandListOpen = true;
+            }
+        }
+
+        public override void RecordCommandImpl(ref Command command)
         {
-           
+            throw new NotImplementedException();
         }
 
         public override void EndRecordingImpl()
         {
-            
+            CommandListD3D12.Close();
+            commandListOpen = false;
         }
     }
 }

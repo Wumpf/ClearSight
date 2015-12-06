@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpDX;
 using SharpDX.Direct3D12;
 
 
@@ -30,6 +31,19 @@ namespace ClearSight.RendererDX12.CommandSubmission
         protected override void DestroyImpl()
         {
             CommandQueueD3D12.Dispose();
+        }
+
+        protected override void ExecuteCommandListsImpl(RendererAbstract.CommandSubmission.CommandList[] commandLists)
+        {
+            using (var commandListsDX12 = new ComArray<SharpDX.Direct3D12.CommandList>(commandLists.Length))
+            {
+                for (int index = 0; index < commandListsDX12.Length; ++index)
+                {
+                    commandListsDX12[index] = ((RendererDX12.CommandSubmission.CommandList)commandLists[index])?.CommandListD3D12;
+                }
+                CommandQueueD3D12.ExecuteCommandLists(commandListsDX12.Length, commandListsDX12);
+            }
+            
         }
     }
 }

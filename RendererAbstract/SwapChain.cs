@@ -158,7 +158,7 @@ namespace ClearSight.RendererAbstract
         /// Waits until all prepared frames are renderd and the GPU has no more tasks.
         /// Use this method carefully since it will usually come with a huge stall!
         /// </summary>
-        void WaitUntilAllFramesCompleted()
+        public void WaitUntilAllFramesCompleted()
         {
             if (NumCompletedFramesGPU != NumCompletedFramesCPU)
             {

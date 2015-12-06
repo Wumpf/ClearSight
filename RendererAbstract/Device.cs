@@ -45,6 +45,11 @@ namespace ClearSight.RendererAbstract
 
         public abstract CommandQueue Create(ref CommandQueue.Descriptor desc, string label = "<unnamed commandQueue>");
         public abstract CommandList Create(ref CommandList.Descriptor desc, string label = "<unnamed commandList>");
+
+        /// <summary>
+        /// Creates a CommandAllocator. Usually not needed, since this is done by the CommandListAllocaionPolicy.
+        /// </summary>
+        public abstract CommandAllocator Create(ref CommandAllocator.Descriptor desc, string label = "<unnamed commandAllocator>");
         public abstract Fence Create(ref Fence.Descriptor desc, string label = "<unnamed fence>");
 
         #endregion

@@ -15,6 +15,7 @@ namespace SimpleDesktop
         private Device renderDevice;
         private SwapChain swapChain;
         private CommandQueue commandQueue;
+        private CommandList commandList;
 
         public Application()
         {
@@ -38,10 +39,10 @@ namespace SimpleDesktop
 
         public void AfterEngineInit()
         {
-            Device.Descriptor desc = new Device.Descriptor {DebugDevice = true};
-            renderDevice = new ClearSight.RendererDX12.Device(ref desc, ClearSight.RendererDX12.Device.FeatureLevel.Level_11_0);
+            var deviceDesc = new Device.Descriptor {DebugDevice = true};
+            renderDevice = new ClearSight.RendererDX12.Device(ref deviceDesc, ClearSight.RendererDX12.Device.FeatureLevel.Level_11_0);
 
-            CommandQueue.Descriptor descCQ = new CommandQueue.Descriptor() { Type = CommandListType.Graphics };
+            var descCQ = new CommandQueue.Descriptor() { Type = CommandListType.Graphics };
             commandQueue = renderDevice.Create(ref descCQ);
 
             var wih = new WindowInteropHelper(window);
@@ -62,11 +63,19 @@ namespace SimpleDesktop
                 Fullscreen = false
             };
             swapChain = renderDevice.Create(ref swapChainDesc);
+
+            var commandListDesc = new CommandList.Descriptor()
+            {
+                Type = CommandListType.Graphics,
+                AllocationPolicy = new CommandListInFlightFrameAllocationPolicy(CommandListType.Graphics, swapChain)
+            };
+            commandList = renderDevice.Create(ref commandListDesc);
         }
 
 
         public void BeforeEngineShutdown()
         {
+            commandList.Dispose();
             commandQueue.Dispose();
             swapChain.Dispose();
             renderDevice.Dispose();
@@ -85,6 +94,10 @@ namespace SimpleDesktop
         private void Update(object sender, EventArgs e)
         {
             swapChain.BeginFrame();
+            commandList.StartRecording();
+
+            commandList.EndRecording();
+            commandQueue.ExecuteCommandList(commandList);
             swapChain.EndFrame();
         }
 

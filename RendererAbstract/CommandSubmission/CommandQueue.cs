@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using ClearSight.Core;
 using ClearSight.RendererAbstract;
 
 namespace ClearSight.RendererAbstract.CommandSubmission
@@ -14,5 +16,22 @@ namespace ClearSight.RendererAbstract.CommandSubmission
         {
             Create();
         }
+
+        public void ExecuteCommandList(CommandList commandList)
+        {
+            ExecuteCommandLists(new CommandList[] { commandList });
+        }
+
+        public void ExecuteCommandLists(CommandList[] commandLists)
+        {
+            foreach (CommandList list in commandLists)
+            {
+                Assert.Debug(!list.Recording, "Cannot execute a command list which is still in the recording state!");
+            }
+            
+            ExecuteCommandListsImpl(commandLists);
+        }
+
+        protected abstract void ExecuteCommandListsImpl(CommandList[] commandLists);
     }
 }

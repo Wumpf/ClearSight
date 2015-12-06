@@ -87,11 +87,15 @@ namespace ClearSight.RendererDX12
             return new SwapChain(ref desc, this, label);
         }
 
+
+        public override CommandAllocator Create(ref CommandAllocator.Descriptor desc, string label = "<unnamed commandAllocator>")
+        {
+            return new CommandSubmission.CommandAllocator(ref desc, this, label);
+        }
         public override CommandQueue Create(ref CommandQueue.Descriptor desc, string label = "<unnamed commandQueue>")
         {
             return new CommandSubmission.CommandQueue(ref desc, this, label);
         }
-
         public override CommandList Create(ref CommandList.Descriptor desc, string label = "<unnamed commandList>")
         {
             return new CommandSubmission.CommandList(ref desc, this, label);

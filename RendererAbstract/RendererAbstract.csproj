@@ -45,6 +45,8 @@
     <Compile Include="CommandSubmission\Command.cs" />
     <Compile Include="CommandSubmission\CommandList.cs" />
     <Compile Include="Binding\RootSignature.cs" />
+    <Compile Include="CommandSubmission\CommandAllocationPolicy.cs" />
+    <Compile Include="CommandSubmission\CommandAllocator.cs" />
     <Compile Include="CommandSubmission\Fence.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Memory\PipelineState.cs" />

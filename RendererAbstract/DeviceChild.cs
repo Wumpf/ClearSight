@@ -78,7 +78,7 @@ namespace ClearSight.RendererAbstract
         /// <summary>
         /// Destroys the resource. Called by Dispose or RemoveRef if the device child is no longer in use.
         /// </summary>
-        internal void Destroy()
+        internal virtual void Destroy()
         {
             ClearSight.Core.Assert.Debug(CurrentState == State.Normal, "It is only possible to destroy intact device children.");
             ClearSight.Core.Assert.Debug(!InUse, "It is not possible to destroy device children that are in use.");

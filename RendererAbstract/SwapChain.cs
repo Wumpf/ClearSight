@@ -174,14 +174,13 @@ namespace ClearSight.RendererAbstract
 
         #endregion
 
-        /// <summary>
-        /// Needs to be called by implementor.
-        /// </summary>
-        protected override void DestroyImpl()
+        internal override void Destroy()
         {
             WaitUntilAllFramesCompleted();
             FrameFence.RemoveRef();
             FrameFence.Destroy();
+
+            base.Destroy();
         }
     }
 }

@@ -45,7 +45,6 @@ namespace ClearSight.RendererDX12
 
         protected override void DestroyImpl()
         {
-            base.DestroyImpl();
             SwapChainDXGI.Dispose();
         }
 

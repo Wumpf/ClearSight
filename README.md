@@ -1,7 +1,7 @@
 ClearSight
 ======================
-A C# (.Net4.6) based hobby engine project.
-Meant primarily for my personal enjoyment and to satisfy my occasional curiosity about design issues.
+A C# (.Net4.6) based hobby engine project. Mostly rendering.
+Meant primarily for my personal enjoyment and to satisfy my occasional curiosity about design issues. Also, I hope to use it as a base for rendering experiments in the future.
 
 Overview
 ----------------------
@@ -9,11 +9,12 @@ todo
 
 Third Party Software & Relations
 ----------------------
-Parts of this project's code are heavily inspired by [ezEngine](http://ezengine.net/),
-a open source C++ engine which I hold in high regard (you should try it!).
 
 Dependencies:
-... none so far, but this will change soon ;-)
+* [SharpDX](http://sharpdx.org/)
+* ... more to come
+
+Some parts of this project's code are inspired by [ezEngine](http://ezengine.net/), an open source C++ engine which I hold in high regard (you should try it!).
 
 Licensing
 ----------------------

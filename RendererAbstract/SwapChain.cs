@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using ClearSight.Core;
 using ClearSight.RendererAbstract.CommandSubmission;
+using ClearSight.RendererAbstract.Memory;
 
 namespace ClearSight.RendererAbstract
 {
@@ -44,6 +45,7 @@ namespace ClearSight.RendererAbstract
 
             public uint Width;
             public uint Height;
+            public Format Format;
 
             public uint SampleCount;
             public uint SampleQuality;
@@ -70,6 +72,18 @@ namespace ClearSight.RendererAbstract
             FrameFence.AddRef();
 
             Create();
+
+            BackbufferResources = new Resource[desc.BufferCount];
+            var resourceDesc = new Resource.Descriptor
+            {
+                Type = Resource.Descriptor.Types.Backbuffer,
+                DataDimension = Dimension.Texture2D
+            };
+            for (uint i = 0; i < BackbufferResources.Length; ++i)
+            {
+                BackbufferResources[i] = device.Create(ref resourceDesc, "Backbuffer");
+                BackbufferResources[i].CreateFromSwapChain(this, i);
+            }
         }
 
         #region Frame Synchronization & Management
@@ -170,7 +184,14 @@ namespace ClearSight.RendererAbstract
 
         #region BackBuffer
 
+        /// <summary>
+        /// Index of the swap chain buffer to which should be used for new rendering commands.
+        /// </summary>
         public abstract uint ActiveSwapChainBufferIndex { get; }
+
+        public Resource[] BackbufferResources { get; private set; }
+   
+        public Resource ActiveBackBuffer => BackbufferResources[ActiveSwapChainBufferIndex];
 
         #endregion
 
@@ -179,6 +200,14 @@ namespace ClearSight.RendererAbstract
             WaitUntilAllFramesCompleted();
             FrameFence.RemoveRef();
             FrameFence.Destroy();
+
+            foreach (var resource in BackbufferResources)
+            {
+                resource.RemoveRef();
+                resource.Dispose();
+            }
+            BackbufferResources = null;
+
 
             base.Destroy();
         }

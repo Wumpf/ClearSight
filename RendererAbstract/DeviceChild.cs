@@ -9,7 +9,7 @@ namespace ClearSight.RendererAbstract
     /// <summary>
     /// Base class for all objects that are created and managed by the device.
     /// </summary>
-    public abstract class DeviceChild<TDescriptor> : IDisposable
+    public abstract class DeviceChild<TDescriptor> : DeviceChildBase
         where TDescriptor : struct
     {
         /// <summary>
@@ -17,6 +17,14 @@ namespace ClearSight.RendererAbstract
         /// </summary>
         public TDescriptor Desc { get; private set; }
 
+        protected DeviceChild(ref TDescriptor desc, Device device, string label) : base(device, label)
+        {
+            Desc = desc;
+        }
+    }
+
+    public abstract class DeviceChildBase : IDisposable
+    {
         /// <summary>
         /// Device from which this DeviceChild was created. Set by Device.Create
         /// </summary>
@@ -27,9 +35,8 @@ namespace ClearSight.RendererAbstract
         /// </summary>
         public string Label { get; private set; }
 
-        protected DeviceChild(ref TDescriptor desc, Device device, string label)
+        protected DeviceChildBase(Device device, string label)
         {
-            Desc = desc;
             Device = device;
             Label = label;
         }
@@ -70,6 +77,7 @@ namespace ClearSight.RendererAbstract
             ClearSight.Core.Assert.Debug(CurrentState == State.Invalid, "It is only possible to create device children if their are uninitialized.");
             ClearSight.Core.Assert.Debug(!InUse, "It is not possible to create device children that are in use.");
             CreateImpl();
+
             CurrentState = State.Normal;
         }
 
@@ -164,7 +172,7 @@ namespace ClearSight.RendererAbstract
         }
 
 
-        ~DeviceChild()
+        ~DeviceChildBase()
         {
             ClearSight.Core.Assert.Debug(CurrentState == State.Invalid, "DeviceChild was not disposed explicitely!");
             ClearSight.Core.Assert.Debug(!InUse, "DeviceChild is still in use during finalization!");

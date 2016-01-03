@@ -19,7 +19,7 @@ namespace ClearSight.RendererDX12
             var swapChainDesc = new SwapChainDescription()
             {
                 BufferCount = (int)Desc.BufferCount,
-                ModeDescription = new ModeDescription((int) Desc.Width, (int)Desc.Height, new Rational(0,0), Format.R8G8B8A8_UNorm),
+                ModeDescription = new ModeDescription((int) Desc.Width, (int)Desc.Height, new Rational(0,0), Memory.Enums.ToDXGIFormat[(int)Desc.Format]),
                 Usage = Usage.RenderTargetOutput,
                 SwapEffect = SwapEffect.FlipDiscard,
                 OutputHandle = Desc.WindowHandle,

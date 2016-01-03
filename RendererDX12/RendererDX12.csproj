@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,13 +56,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binding\DescriptorHeap.cs" />
     <Compile Include="CommandSubmission\CommandAllocator.cs" />
     <Compile Include="CommandSubmission\Fence.cs" />
     <Compile Include="CommandSubmission\CommandList.cs" />
     <Compile Include="CommandSubmission\CommandQueue.cs" />
     <Compile Include="Device.cs" />
+    <Compile Include="Memory\Enums.cs" />
+    <Compile Include="Memory\Resource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SwapChain.cs" />
+    <Compile Include="InternalUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Core\Core.csproj">

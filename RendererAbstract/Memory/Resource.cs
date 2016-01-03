@@ -2,7 +2,7 @@
 
 namespace ClearSight.RendererAbstract.Memory
 {
-    abstract class Resource : DeviceChild<Resource.Descriptor>
+    public abstract partial class Resource : DeviceChild<Resource.Descriptor>
     {
         public struct Descriptor
         {
@@ -12,9 +12,16 @@ namespace ClearSight.RendererAbstract.Memory
                 Upload,
                 Readback,
                 //Custom // Not implemented for now.
+
+                /// <summary>
+                /// Special resource that is created from a swap chain.
+                /// Do not use this manually!
+                /// </summary>
+                Backbuffer,
             }
 
             public Types Type;
+            public Dimension DataDimension;
         }
 
         /// <summary>
@@ -27,5 +34,14 @@ namespace ClearSight.RendererAbstract.Memory
         {
             Create();
         }
+
+        /// <summary>
+        /// Called after the normal create if this resource was created from a swapchain backbuffer.
+        /// </summary>
+        internal void CreateFromSwapChain(SwapChain swapChain, uint backbufferIndex)
+        {
+            CreateFromSwapChainImpl(swapChain, backbufferIndex);
+        }
+        protected abstract void CreateFromSwapChainImpl(SwapChain swapChain, uint backbufferIndex);
     }
 }

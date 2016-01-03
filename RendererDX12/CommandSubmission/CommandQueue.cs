@@ -2,7 +2,6 @@
 using SharpDX;
 using SharpDX.Direct3D12;
 
-
 namespace ClearSight.RendererDX12.CommandSubmission
 {
     public class CommandQueue : RendererAbstract.CommandSubmission.CommandQueue
@@ -21,7 +20,7 @@ namespace ClearSight.RendererDX12.CommandSubmission
                 Priority = (int) CommandQueuePriority.Normal,
                 Flags = CommandQueueFlags.None, // Disabling GPU timeout is not yet exposed.
                 NodeMask = 0,
-                Type = CommandList.GetDXCommandListType(Desc.Type)
+                Type = InternalUtils.GetDXCommandListType(Desc.Type)
             };
 
             CommandQueueD3D12 = ((Device) Device).DeviceD3D12.CreateCommandQueue(descd3d12);
@@ -43,7 +42,6 @@ namespace ClearSight.RendererDX12.CommandSubmission
                 }
                 CommandQueueD3D12.ExecuteCommandLists(commandListsDX12.Length, commandListsDX12);
             }
-            
         }
     }
 }

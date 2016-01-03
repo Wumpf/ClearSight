@@ -14,7 +14,7 @@ namespace ClearSight.RendererDX12.CommandSubmission
         /// <exception cref="SharpDX.SharpDXException"></exception>
         protected override void CreateImpl()
         {
-            AllocatorD3D12 = ((Device)Device).DeviceD3D12.CreateCommandAllocator(CommandList.GetDXCommandListType(Desc.Type));
+            AllocatorD3D12 = ((Device)Device).DeviceD3D12.CreateCommandAllocator(InternalUtils.GetDXCommandListType(Desc.Type));
             AllocatorD3D12.Name = Label;
         }
 

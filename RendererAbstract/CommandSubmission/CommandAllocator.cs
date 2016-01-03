@@ -1,4 +1,7 @@
-﻿namespace ClearSight.RendererAbstract.CommandSubmission
+﻿using System.Collections.Generic;
+using ClearSight.RendererAbstract.Binding;
+
+namespace ClearSight.RendererAbstract.CommandSubmission
 {
     /// <summary>
     /// Allocator for command list. 
@@ -18,19 +21,30 @@
             Create();
         }
 
-        /// <summary>
-        /// Called by the CommandList when recording starts.
-        /// </summary>
-        //internal abstract void OnStartRecording();
+        internal void RegisterResourceUse(DeviceChildBase usedResource)
+        {
+            if (usedResource != null)
+            {
+                usedResource.AddRef();
+                usedResources.Add(usedResource);
+            }
+        }
 
-        //internal abstract void OnRecordCommand(ref Command command);
+        internal void ResetResourceUse()
+        {
+            foreach (var usedResource in usedResources)
+            {
+                usedResource.RemoveRef();
+            }
+            usedResources.Clear();
+        }
 
-        /// <summary>
-        /// Called by the CommandList when recording ends.
-        /// </summary>
-        //internal abstract void OnEndRecording();
+        internal override void Destroy()
+        {
+            ResetResourceUse();
+            base.Destroy();
+        }
 
-
-
+        private List<DeviceChildBase> usedResources = new List<DeviceChildBase>();
     }
 }
